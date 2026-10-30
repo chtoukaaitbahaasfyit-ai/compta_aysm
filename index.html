@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>جمعية شباب الغد للتنمية والتعاون - التدبير المالي والمحاسبي</title>
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <!-- الخطوط الرسمية -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Tajawal', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
+    .font-mono-acc { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col select-none pb-20">
+
+  <!-- Header Mobile & Desktop -->
+  <header class="bg-slate-900 text-white sticky top-0 z-40 border-b border-slate-800 shadow-md">
+    <div class="px-3 py-2 flex items-center justify-between border-b border-slate-800 text-[11px] text-slate-300">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-bold text-sky-400">ASSOCIATION COMPTA PRO</span>
+        <span class="text-slate-600">|</span>
+        <span class="text-slate-400">CNC 23/2023 • ظهير 1958</span>
+      </div>
+      <div id="roleBadge" class="bg-blue-900 text-sky-200 px-2 py-0.5 rounded font-bold text-[10px]">
+        المسؤول الإداري
+      </div>
+    </div>
+
+    <div class="px-3 py-2 flex items-center justify-between">
+      <div>
+        <h1 class="text-sm font-bold text-white">جمعية شباب الغد للتنمية والتعاون</h1>
+        <p class="text-[10px] text-slate-400">وصل الإيداع: 1482/2016 • الدار البيضاء • 2026</p>
+      </div>
+      <div class="bg-emerald-950 border border-emerald-700 px-2.5 py-1 rounded text-right">
+        <span class="text-[9px] text-emerald-300 block">السيولة المتاحة</span>
+        <span id="headerTreasury" class="font-mono-acc font-bold text-emerald-300 text-xs">236,750.00 DH</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- User Persona Switcher Banner -->
+  <div class="bg-slate-800 text-white px-3 py-2 flex items-center justify-between text-xs overflow-x-auto gap-2 border-b border-slate-700">
+    <span class="text-slate-400 shrink-0 text-[11px]">تبديل الدور:</span>
+    <div class="flex gap-1.5 shrink-0">
+      <button onclick="setRole('idari')" id="btnIdari" class="px-2.5 py-1 rounded bg-blue-600 text-white font-bold text-[11px]">
+        المسؤول الإداري
+      </button>
+      <button onclick="setRole('tresorier')" id="btnTresorier" class="px-2.5 py-1 rounded bg-slate-700 text-slate-300 hover:text-white font-bold text-[11px]">
+        أمين المال
+      </button>
+      <button onclick="setRole('president')" id="btnPresident" class="px-2.5 py-1 rounded bg-slate-700 text-slate-300 hover:text-white font-bold text-[11px]">
+        رئيس الجمعية
+      </button>
+    </div>
+  </div>
+
+  <!-- Main View Container -->
+  <main class="flex-1 p-3 sm:p-5 max-w-5xl mx-auto w-full space-y-4">
+
+    <!-- TAB 1: DASHBOARD -->
+    <section id="view-dashboard" class="space-y-4">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+          <span class="text-[10px] text-slate-500 font-bold block">إجمالي المداخيل</span>
+          <span class="text-base font-bold font-mono text-emerald-700 mt-1 block">73,000 DH</span>
+          <span class="text-[10px] text-slate-400">منح واشتراكات</span>
+        </div>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+          <span class="text-[10px] text-slate-500 font-bold block">إجمالي المصاريف</span>
+          <span class="text-base font-bold font-mono text-rose-700 mt-1 block">14,950 DH</span>
+          <span class="text-[10px] text-slate-400">أنشطة وتسيير</span>
+        </div>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+          <span class="text-[10px] text-slate-500 font-bold block">فائض الدورة (Résultat)</span>
+          <span class="text-base font-bold font-mono text-blue-700 mt-1 block">+58,050 DH</span>
+          <span class="text-[10px] text-slate-400">غير قابل للتوزيع</span>
+        </div>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+          <span class="text-[10px] text-slate-500 font-bold block">الطلبات المعلقة</span>
+          <span id="kpiPending" class="text-base font-bold font-mono text-amber-600 mt-1 block">2 طلبات</span>
+          <span class="text-[10px] text-amber-700 font-semibold">تتطلب المراجعة</span>
+        </div>
+      </div>
+
+      <!-- Quick Action Button -->
+      <div class="flex gap-2">
+        <button onclick="openNewOrderModal()" class="flex-1 py-2.5 px-4 bg-blue-700 hover:bg-blue-600 text-white rounded-xl text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
+          <span>+ طلب صرف جديد (المسؤول الإداري)</span>
+        </button>
+        <button onclick="switchTab('disbursements')" class="py-2.5 px-4 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold shadow-2xs">
+          أوامر الصرف
+        </button>
+      </div>
+
+      <!-- Recent Orders List -->
+      <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-xs space-y-3">
+        <div class="flex justify-between items-center border-b pb-2">
+          <h2 class="font-bold text-xs text-slate-900">آخر طلبات وأوامر الصرف</h2>
+          <button onclick="switchTab('disbursements')" class="text-blue-600 font-bold text-[11px]">عرض الكل ←</button>
+        </div>
+        <div id="recentOrdersContainer" class="space-y-2 text-xs"></div>
+      </div>
+    </section>
+
+    <!-- TAB 2: DISBURSEMENTS (الصرف والموافقات) -->
+    <section id="view-disbursements" class="hidden space-y-3">
+      <div class="flex items-center justify-between">
+        <h2 class="font-bold text-sm text-slate-900">أوامر الصرف ودورة الموافقات الثلاثية</h2>
+        <button onclick="openNewOrderModal()" class="px-3 py-1.5 bg-blue-700 text-white font-bold text-xs rounded-lg shadow-xs">
+          + طلب جديد
+        </button>
+      </div>
+
+      <div id="disbursementsList" class="space-y-2.5"></div>
+    </section>
+
+    <!-- TAB 3: JOURNAL (اليومية العامة) -->
+    <section id="view-journal" class="hidden space-y-3">
+      <h2 class="font-bold text-sm text-slate-900">دفتر اليومية العامة للجمعية (Partie Double)</h2>
+      <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs">
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-right">
+            <thead class="bg-slate-900 text-white">
+              <tr>
+                <th class="p-2">رقم السند</th>
+                <th class="p-2">التاريخ</th>
+                <th class="p-2">البيان</th>
+                <th class="p-2 text-left">مدين (DH)</th>
+                <th class="p-2 text-left">دائن (DH)</th>
+              </tr>
+            </thead>
+            <tbody id="journalTableBody" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: REPORTS (الميزانية والنتائج) -->
+    <section id="view-reports" class="hidden space-y-3">
+      <h2 class="font-bold text-sm text-slate-900">القوائم المالية والتقارير (CNC 23/2023)</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
+          <h3 class="font-bold text-slate-900 border-b pb-1 text-xs">ملخص الميزانية (Bilan)</h3>
+          <div class="flex justify-between"><span>الأصول الثابتة (Immobilisations):</span><span class="font-bold font-mono">43,133 DH</span></div>
+          <div class="flex justify-between"><span>الأصول المتداولة (الذمم والمخزون):</span><span class="font-bold font-mono">0.00 DH</span></div>
+          <div class="flex justify-between"><span>الخزينة والأبناك (Trésorerie):</span><span class="font-bold font-mono text-emerald-700">236,750 DH</span></div>
+          <div class="border-t pt-1 flex justify-between font-bold text-blue-900"><span>مجموع الأصول (Total Actif):</span><span class="font-mono">279,883 DH</span></div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
+          <h3 class="font-bold text-slate-900 border-b pb-1 text-xs">حساب النتائج (CPC)</h3>
+          <div class="flex justify-between"><span>مداخيل الاستغلال (منح واشتراكات):</span><span class="font-bold font-mono text-emerald-700">73,000 DH</span></div>
+          <div class="flex justify-between"><span>مصاريف الاستغلال (أنشطة ومشتريات):</span><span class="font-bold font-mono text-rose-700">14,950 DH</span></div>
+          <div class="border-t pt-1 flex justify-between font-bold text-emerald-800"><span>فائض الدورة الصافي (Excédent):</span><span class="font-mono">+58,050 DH</span></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900 border-t border-slate-800 text-slate-300 flex items-center justify-around py-1 shadow-2xl">
+    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center p-1 text-blue-400 font-bold text-[10px]">
+      <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      <span>الرئيسية</span>
+    </button>
+    <button onclick="switchTab('disbursements')" id="nav-disbursements" class="flex flex-col items-center p-1 text-slate-400 text-[10px]">
+      <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+      <span>الصرف</span>
+    </button>
+    <button onclick="openNewOrderModal()" class="flex flex-col items-center -mt-4 cursor-pointer">
+      <div class="w-11 h-11 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg border-2 border-slate-900 text-xl font-bold">+</div>
+      <span class="text-[9px] text-sky-400 font-bold mt-0.5">طلب جديد</span>
+    </button>
+    <button onclick="switchTab('journal')" id="nav-journal" class="flex flex-col items-center p-1 text-slate-400 text-[10px]">
+      <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+      <span>اليومية</span>
+    </button>
+    <button onclick="switchTab('reports')" id="nav-reports" class="flex flex-col items-center p-1 text-slate-400 text-[10px]">
+      <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      <span>التقارير</span>
+    </button>
+  </nav>
+
+  <!-- Modal: Nouveau Décaissement -->
+  <div id="modalNewOrder" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs hidden items-center justify-center p-3">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-5 space-y-3 shadow-2xl text-xs max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-sm text-slate-900">إنشاء طلب صرف جديد (المسؤول الإداري)</h3>
+        <button onclick="closeNewOrderModal()" class="text-slate-400 hover:text-rose-600 text-lg">✕</button>
+      </div>
+
+      <form onsubmit="handleCreateOrder(event)" class="space-y-3">
+        <div>
+          <label class="block font-semibold mb-1">المستفيد (Bénéficiaire) *</label>
+          <input type="text" id="inpBeneficiary" required placeholder="مثال: مكتبة النجاح، صيدلية النور..." class="w-full p-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">موضوع الصرف والغرض منه *</label>
+          <input type="text" id="inpSubject" required placeholder="مثال: اقتناء أدوية، طبع كتيبات..." class="w-full p-2 border rounded-lg">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-semibold mb-1">المبلغ الصافي (درهم) *</label>
+            <input type="number" id="inpAmount" required min="1" step="0.01" placeholder="4200" class="w-full p-2 border rounded-lg font-mono font-bold">
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">طريقة الأداء المقترحة</label>
+            <select id="inpMethod" class="w-full p-2 border rounded-lg bg-white">
+              <option value="cheque">شيك بنكي (Chèque)</option>
+              <option value="virement">تحويل بنكي (Virement)</option>
+              <option value="especes">نقداً عبر الصندوق (Caisse)</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button type="button" onclick="closeNewOrderModal()" class="px-4 py-2 border rounded-lg text-slate-600">إلغاء</button>
+          <button type="submit" class="px-4 py-2 bg-blue-700 text-white font-bold rounded-lg shadow-sm">إرسال لأمين المال</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Initial State & Data
+    let currentRole = 'idari'; // 'idari' | 'tresorier' | 'president'
+    let currentBalance = 236750;
+
+    let orders = [
+      { id: '1', number: 'ORD-2026-001', beneficiary: 'مكتبة ومطبعة النجاح الحديثة', subject: 'طباعة الدلائل التدريبية والملصقات التوعوية', amount: 4200, status: 'en_attente_tresorier' },
+      { id: '2', number: 'ORD-2026-002', beneficiary: 'شركة الأطلس للنقل السياحي', subject: 'كراء حافلة لنقل 40 مشاركاً للملتقى', amount: 6500, status: 'en_attente_president' },
+      { id: '3', number: 'ORD-2026-003', beneficiary: 'صيدلية النور - البيضاء', subject: 'اقتناء أدوية ومستلزمات الإسعاف للقافلة', amount: 15400, status: 'execute', piece: 'BQ-2026-0002' }
+    ];
+
+    let journal = [
+      { piece: 'OD-2026-0001', date: '2026-01-01', label: 'رصيد الانطلاق البنكي والصندوق', debit: 148500, credit: 148500 },
+      { piece: 'BQ-2026-0001', date: '2026-01-15', label: 'دفعة منحة المبادرة الوطنية INDH', debit: 60000, credit: 60000 },
+      { piece: 'AC-2026-0001', date: '2026-01-28', label: 'اقتناء مستلزمات طبية للقافلة', debit: 14500, credit: 14500 }
+    ];
+
+    function setRole(role) {
+      currentRole = role;
+      document.getElementById('btnIdari').className = role === 'idari' ? 'px-2.5 py-1 rounded bg-blue-600 text-white font-bold text-[11px]' : 'px-2.5 py-1 rounded bg-slate-700 text-slate-300 font-bold text-[11px]';
+      document.getElementById('btnTresorier').className = role === 'tresorier' ? 'px-2.5 py-1 rounded bg-amber-600 text-white font-bold text-[11px]' : 'px-2.5 py-1 rounded bg-slate-700 text-slate-300 font-bold text-[11px]';
+      document.getElementById('btnPresident').className = role === 'president' ? 'px-2.5 py-1 rounded bg-emerald-600 text-white font-bold text-[11px]' : 'px-2.5 py-1 rounded bg-slate-700 text-slate-300 font-bold text-[11px]';
+      
+      const badge = document.getElementById('roleBadge');
+      if (role === 'idari') { badge.innerText = 'المسؤول الإداري'; badge.className = 'bg-blue-900 text-sky-200 px-2 py-0.5 rounded font-bold text-[10px]'; }
+      if (role === 'tresorier') { badge.innerText = 'أمين المال'; badge.className = 'bg-amber-900 text-amber-200 px-2 py-0.5 rounded font-bold text-[10px]'; }
+      if (role === 'president') { badge.innerText = 'رئيس الجمعية'; badge.className = 'bg-emerald-900 text-emerald-200 px-2 py-0.5 rounded font-bold text-[10px]'; }
+      renderOrders();
+    }
+
+    function switchTab(tabId) {
+      ['dashboard', 'disbursements', 'journal', 'reports'].forEach(t => {
+        document.getElementById('view-' + t).classList.add('hidden');
+        document.getElementById('nav-' + t).className = 'flex flex-col items-center p-1 text-slate-400 text-[10px]';
+      });
+      document.getElementById('view-' + tabId).classList.remove('hidden');
+      document.getElementById('nav-' + tabId).className = 'flex flex-col items-center p-1 text-blue-400 font-bold text-[10px]';
+    }
+
+    function renderOrders() {
+      const container = document.getElementById('disbursementsList');
+      const recentContainer = document.getElementById('recentOrdersContainer');
+      container.innerHTML = '';
+      recentContainer.innerHTML = '';
+
+      orders.forEach(o => {
+        let badge = '';
+        let actionBtn = '';
+
+        if (o.status === 'en_attente_tresorier') {
+          badge = '<span class="px-2 py-0.5 bg-amber-50 text-amber-800 border border-amber-300 rounded font-semibold text-[10px]">في انتظار أمين المال</span>';
+          if (currentRole === 'tresorier' || currentRole === 'idari') {
+            actionBtn = `<button onclick="approveTreasurer('${o.id}')" class="px-2.5 py-1 bg-amber-600 text-white font-bold rounded text-[10px]">تأشيرة وموافقة</button>`;
+          }
+        } else if (o.status === 'en_attente_president') {
+          badge = '<span class="px-2 py-0.5 bg-sky-50 text-sky-800 border border-sky-300 rounded font-semibold text-[10px]">في انتظار أمر الرئيس</span>';
+          if (currentRole === 'president') {
+            actionBtn = `<button onclick="executePresident('${o.id}')" class="px-2.5 py-1 bg-emerald-700 text-white font-bold rounded text-[10px]">أمر بالأداء</button>`;
+          }
+        } else if (o.status === 'execute') {
+          badge = '<span class="px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-300 rounded font-semibold text-[10px]">تم الصرف بالدفتر</span>';
+        }
+
+        const card = `
+          <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs space-y-1.5">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="font-mono font-bold text-blue-700 text-xs">${o.number}</span>
+                <span class="font-bold text-slate-900 block text-xs mt-0.5">${o.beneficiary}</span>
+              </div>
+              <span class="font-mono font-bold text-slate-900 text-sm">${o.amount.toLocaleString()} DH</span>
+            </div>
+            <p class="text-[11px] text-slate-600">${o.subject}</p>
+            <div class="flex justify-between items-center pt-2 border-t text-[10px]">
+              <div>${badge}</div>
+              <div>${actionBtn}</div>
+            </div>
+          </div>
+        `;
+        container.innerHTML += card;
+        recentContainer.innerHTML += card;
+      });
+
+      renderJournal();
+    }
+
+    function renderJournal() {
+      const tbody = document.getElementById('journalTableBody');
+      tbody.innerHTML = '';
+      journal.forEach(j => {
+        tbody.innerHTML += `
+          <tr class="hover:bg-slate-50">
+            <td class="p-2 font-mono font-bold text-blue-800">${j.piece}</td>
+            <td class="p-2 text-slate-500 font-mono">${j.date}</td>
+            <td class="p-2 text-slate-800 font-medium">${j.label}</td>
+            <td class="p-2 text-left font-mono font-semibold text-blue-900">${j.debit.toLocaleString()} DH</td>
+            <td class="p-2 text-left font-mono font-semibold text-slate-700">${j.credit.toLocaleString()} DH</td>
+          </tr>
+        `;
+      });
+    }
+
+    function approveTreasurer(id) {
+      const order = orders.find(o => o.id === id);
+      if (order) {
+        order.status = 'en_attente_president';
+        alert(`تمت تأشيرة أمين المال على الطلب ${order.number} وإحالته إلى السيد الرئيس.`);
+        renderOrders();
+      }
+    }
+
+    function executePresident(id) {
+      const order = orders.find(o => o.id === id);
+      if (order) {
+        order.status = 'execute';
+        currentBalance -= order.amount;
+        document.getElementById('headerTreasury').innerText = currentBalance.toLocaleString() + '.00 DH';
+        const pieceNum = 'BQ-2026-000' + (journal.length + 1);
+        journal.unshift({
+          piece: pieceNum,
+          date: new Date().toISOString().split('T')[0],
+          label: `صرف ${order.number} - ${order.beneficiary}`,
+          debit: order.amount,
+          credit: order.amount
+        });
+        alert(`تم الصرف والتسجيل المحاسبي التلقائي باليومية برقم: ${pieceNum}`);
+        renderOrders();
+      }
+    }
+
+    function handleCreateOrder(e) {
+      e.preventDefault();
+      const ben = document.getElementById('inpBeneficiary').value;
+      const sub = document.getElementById('inpSubject').value;
+      const amt = parseFloat(document.getElementById('inpAmount').value);
+      const nextNum = 'ORD-2026-00' + (orders.length + 1);
+
+      orders.unshift({
+        id: Date.now().toString(),
+        number: nextNum,
+        beneficiary: ben,
+        subject: sub,
+        amount: amt,
+        status: 'en_attente_tresorier'
+      });
+
+      closeNewOrderModal();
+      alert(`تم إرسال طلب الصرف ${nextNum} بنجاح إلى أمين المال للمراجعة.`);
+      renderOrders();
+      switchTab('disbursements');
+    }
+
+    function openNewOrderModal() { document.getElementById('modalNewOrder').classList.remove('hidden'); document.getElementById('modalNewOrder').classList.add('flex'); }
+    function closeNewOrderModal() { document.getElementById('modalNewOrder').classList.add('hidden'); document.getElementById('modalNewOrder').classList.remove('flex'); }
+
+    // Initial render
+    renderOrders();
+  </script>
+</body>
+</html>
